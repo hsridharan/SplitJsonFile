@@ -17,6 +17,20 @@ def extract_content_from_json(input_file_path, key_to_extract, output_file_suffi
         print(f"Extracting content for key: {key_to_extract}")
         extracted_content = data.get(key_to_extract, {})
 
+        # Add the new elements
+        for item in extracted_content:
+            item["ItemClass"] = "TenantSkillTest"
+            item["skillId@Is.Queryable"] = ""
+            item["skillId@odata.type"] = "String"
+            item["Name@Is.Queryable"] = "true"
+            item["Name@odata.type"] = "String"
+            item["Description@Is.Queryable"] = "true"
+            item["Description@odata.type"] = "String"
+            item["roles@odata.type"] = "Collection(String)"
+            item["SecondaryKey"] = "urn:tenant:skill:exCode1"
+            item["Name"] = item.get("translations", {}).get("en_US", {}).get("Name", "")
+            item["Description"] = item.get("translations", {}).get("en_US", {}).get("Description", "")
+
         # Create the output file path
         base_name = os.path.basename(input_file_path)
         directory_name = os.path.dirname(input_file_path)
@@ -46,7 +60,7 @@ def main():
     args = parser.parse_args()
 
     extract_content_from_json(args.input_file_path, args.key_to_extract)
-    # input_file_path = 'C:/VivaSkills/TenantScript/test.json'
+    # input_file_path = 'C:/VivaSkills/TenantScript/tenant.json'
     # extract_content_from_json(input_file_path, "TenantCustomSkills")
 
 if __name__ == "__main__":
